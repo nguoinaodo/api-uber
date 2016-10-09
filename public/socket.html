@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Socket</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        
+        <h1>IO</h1>
+        <div id="content"></div>
+        
+        <input type="text" name="reply" id="input"/>
+        <button id="send">Send</button>
+        
+        
+        <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+        <script>
+          var content = document.getElementById('content');
+          var socket = io.connect('https://test-uber-nguoinaodo.c9users.io');
+          var roomId;
+          
+          socket.on('hello', function (data) {
+            
+            content.innerHTML += '<p>' + data.msg + '</p>';
+            socket.emit('client-hello', { msg: data.msg });
+          });
+          
+          socket.on('join', function(data) {
+            roomId = data.roomId;     
+          });
+          
+          // chat
+          socket.on('chat2', function(data) {
+            console.log('Stranger: ' + data.msg);
+            content.innerHTML += '<p>Stranger: ' + data.msg + '</p>'; 
+          });
+          
+          var sendBtn = document.getElementById('send');
+          var input = document.getElementById('input');
+          
+          sendBtn.addEventListener('click', function() {
+            var inputValue = input.value;  
+              
+            socket.emit('chat1', {msg: inputValue, roomId: roomId});  
+            content.innerHTML += '<p>Me: ' + inputValue + '</p>'; 
+            console.log('Me: ' + inputValue);
+          });
+          
+        </script>
+        
+        
+    </body>
+</html>
