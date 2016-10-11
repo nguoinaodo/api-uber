@@ -35,6 +35,6 @@ routes(app, passport);
 
 ioController(io);
 
-server.listen(8080, function() {
+server.listen(process.env.PORT, function() {
     console.log('Server is listening');
 });
