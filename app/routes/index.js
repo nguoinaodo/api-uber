@@ -58,7 +58,7 @@ module.exports = function(app, passport) {
     
     // test db
     
-    app.route('/testdb-cus')
+    app.route('/testdb')
         .get(function(req, res) {
             pool.getConnection(function(err, conn) {
                 if (err) throw err;
