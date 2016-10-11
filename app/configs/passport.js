@@ -40,7 +40,6 @@ module.exports = function (passport) {
 	});
 	// sign up customer
 	passport.use('local-signup-customer', new LocalStrategy({
-		usernameField: 'account',
 		passwordField: 'password',
 		passReqToCallback: true
 	}, function(req, account, password, done) {
@@ -49,7 +48,7 @@ module.exports = function (passport) {
 				if (err) throw err;
 				
 				console.log('connect as id ' + conn.threadId);
-				conn.query('select * from customer where account ="' + account + '"', function(err, rows) {
+				conn.query('select * from customer where email ="' + account + '" or phone="' + account + '"', function(err, rows) {
 					if (err) return done(err);
 					
 					// email exists
@@ -60,7 +59,12 @@ module.exports = function (passport) {
 					// else create new user
 					var newUser = {};
 					
-					newUser.account = account;
+					newUser.email = req.body.email;
+					newUser.phone = req.body.phone;
+					newUser.name = req.body.name;
+					newUser.lastName = req.body.lastname;
+					newUser.address = req.body.address;
+					newUser.officeName = req.body.officeName;
 					newUser.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
 					conn.query("insert into customer (account, password) value ('" + account + "', '" + newUser.password + "')", 
 						function(err, result) {
@@ -79,7 +83,6 @@ module.exports = function (passport) {
 	
 	// login customer
 	passport.use('local-login-customer', new LocalStrategy({
-		usernameField: 'account',
 		passwordField: 'password',
 		passReqToCallback: true
 	}, function(req, account, password, done) {
@@ -87,7 +90,7 @@ module.exports = function (passport) {
 			if (err) throw err;
 			
 			console.log('login');
-			conn.query('select * from customer where account = "' + account + '"', function(err, rows) {
+			conn.query('select * from customer where email = "' + account + '" or phone = "' + account + '"', function(err, rows) {
 				if (err) return done(err);
 				
 				// no user found
@@ -113,7 +116,6 @@ module.exports = function (passport) {
 	}));
 	// sign up driver
 	passport.use('local-signup-driver', new LocalStrategy({
-		usernameField: 'account',
 		passwordField: 'password',
 		passReqToCallback: true
 	}, function(req, account, password, done) {
@@ -153,7 +155,6 @@ module.exports = function (passport) {
 	
 	// login customer
 	passport.use('local-login-driver', new LocalStrategy({
-		usernameField: 'account',
 		passwordField: 'password',
 		passReqToCallback: true
 	}, function(req, account, password, done) {
