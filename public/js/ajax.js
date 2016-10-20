@@ -1,17 +1,6 @@
 'use strict';
-function ready (fn) {
-      if (typeof fn !== 'function') {
-         return;
-      }
 
-      if (document.readyState === 'complete') {
-         return fn();
-      }
-
-      document.addEventListener('DOMContentLoaded', fn, false);
-   }
-
-function ajaxRequest (method, url, callback) {
+function ajaxGet(method, url, callback) {
       var xmlhttp = new XMLHttpRequest();
 
       xmlhttp.onreadystatechange = function () {

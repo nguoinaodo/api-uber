@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.0/socket.io.js"></script>  
+    </head>
+    <body>
+        <div id="content"></div>
+        <div id="list"></div>
+        <div id="chat"></div>
+        
+       
+        <script type="text/javascript">
+            function getCustomer(thisObj) {
+                var customerSocketId = thisObj.parentNode.getAttribute('id').substr(8)
+                
+                socket.emit('driverGetCustomer', {
+                    customerSocketId: customerSocketId 
+                });
+                
+                list.style.display = 'none';
+                
+                socket.emit('driverGetCustomer', {
+                    customerSocketId: customerSocketId 
+                });
+                
+                content.innerHTML += '<p>Connect to customer ' + customerSocketId + '</p>';
+                
+                setInterval(function() {
+                    var lat = Math.random()*360 - 180,
+                        long = Math.random()*180 - 90;                    
+                    
+                    socket.emit('driverLocation', {
+                        lat: lat,
+                        long: long
+                    });
+                    
+                    chat.innerHTML += '<p>Sent coordinate to customer: (' + lat + ', ' + long + ')</p>';
+                    
+                }, 5000);
+            }
+        </script>
+        <script type="text/javascript">
+            var content = document.getElementById('content');
+            var list = document.getElementById('list');
+            var chat = document.getElementById('chat');
+            var socket = io.connect();
+            
+            socket.on('connect', function() {
+                socket.emit('driverHello');
+            }); 
+            // server say hello and send list of customer
+            socket.on('helloDriver', function(data) {
+                content.innerHTML += '<p>' + data.msg + '</p>';
+                content.innerHTML += '<p>Customer list</p>';
+                data.customers.forEach(function(id, i) {
+                    list.innerHTML += '<div id="customer' + id + '">Customer ' + id 
+                        +' <button onclick="getCustomer(this);">Get customer</button></div>'; 
+                });
+            });
+            // a customer find driver
+            socket.on('customerFindDriver', function(data) {
+                console.log('customerFindDriver');
+                var lat = data.lat,
+                    long = data.long,
+                    customerSocketId = data.customerSocketId;
+                
+                list.innerHTML += '<div id="customer' + customerSocketId + '">Customer ' + customerSocketId 
+                    +' (' + lat + ', ' + long + ') <button onclick="getCustomer(this);">Get customer</button></div>';
+            });
+            // a driver get a customer
+            socket.on('booked', function(data) {
+                var customer = document.getElementById('customer' + data.customerSocketId);
+                
+                list.removeChild(customer);
+            });
+            
+            
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.0/socket.io.js"></script>
+    </head>
+    <body>
+        
+        <div id="content"></div>
+        <div id="chat"></div>
+        <button id="findDriver">Find driver</button>
+        
+        
+        <script type="text/javascript">
+            var content = document.getElementById('content');
+            var findDriverBtn = document.getElementById('findDriver');
+            var chat = document.getElementById('chat');
+            var socket = io.connect();
+            
+            socket.on('connect', function() {
+                socket.emit('customerHello');
+            }); 
+            
+            socket.on('helloCustomer', function(data) {
+                content.innerHTML += '<p>' + data + '</p>'; 
+            });
+            // find driver on click button
+            findDriverBtn.addEventListener('click', function() {
+                socket.emit('findDriver', {
+                    // random lat long
+                    lat: Math.random()*360 - 180,
+                    long: Math.random()*180 - 90
+                }); 
+            });
+            // connected to driver
+            socket.on('joinRoom', function(data) {
+                var driverSocketId = data.driverSocketId;
+                
+                content.innerHTML = '<p>Connected to driver ' + driverSocketId + '</p>';   
+                findDriverBtn.style.display = 'none';
+            });
+            
+            // driver send location
+            socket.on('driverLocation', function(data) {
+                console.log('receive loaction');
+                
+                chat.innerHTML += '<p>Driver sent location: (' + data.lat + ', ' + data.long + ')</p>';    
+            });
+            
+        </script>
+    </body>
+</html>

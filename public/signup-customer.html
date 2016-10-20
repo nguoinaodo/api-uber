@@ -4,7 +4,7 @@
         <title>Sign up customer</title>
     </head>
     <body>
-        <form action="/signup-customer" method="POST">
+        <form action="/auth/signupCustomer" method="POST">
             <b>Email</b>
             <input type="text" name="email">
             <b>Phone</b>
@@ -12,10 +12,12 @@
             <b>Name</b>
             <input type="text" name="name">
             <b>Last Name</b>
-            <input type="text" name="lastname">
-            <b>Address</b>
-            <input type="text" name="address">
+            <input type="text" name="lastName">
+            <b>Account Type</b>
+            <input type="text" name="accountType">
             <b>Office Name</b>
+            <input type="text" name="officeName">
+            <b>Password</b>
             <input type="password" name="password">
             <input type="submit" value="Sign up">
         </form>
