@@ -13,13 +13,13 @@ function ioController(io) {
 	    //console.log('connected to socket id ' + socket.id);
 	    
 	    
-	    /// sau khi da xac thuc bang socket (khi user ket noi trong collection token se co token, userId, socketId, city)
-	    /// customer nam trong room customer<City>, driver nam trong room driver<City>
-	    /// khi customer click vao tim xe, emit su kien findDriver, kem theo toa do cua customer
-	    /// server bat su kien findDriver, phat ra cho cac driver trong pham vi (trong ban kinh R tinh tu customer)
-	    /// su kien customerFindDriver kem them toa do customer 
-	    /// khi driver nhan duoc toa do cua customer, neu bam nhan thi emit su kien driverGetCustomer
-	    /// server nhan su kien driverGetCustomer cua driver dau tien, ket noi giua 2 thang, roi ngat ket noi voi nhung thang con lai:
+	    // / sau khi da xac thuc bang socket (khi user ket noi trong collection token se co token, userId, socketId, city)
+	    // / customer nam trong room customer<City>, driver nam trong room driver<City>
+	    // / khi customer click vao tim xe, emit su kien findDriver, kem theo toa do cua customer
+	    // / server bat su kien findDriver, phat ra cho cac driver trong pham vi (trong ban kinh R tinh tu customer)
+	    // / su kien customerFindDriver kem them toa do customer 
+	    // / khi driver nhan duoc toa do cua customer, neu bam nhan thi emit su kien driverGetCustomer
+	    // / server nhan su kien driverGetCustomer cua driver dau tien, ket noi giua 2 thang, roi ngat ket noi voi nhung thang con lai:
 	    /// 	+ ket noi driver va customer: dua customer, driver vao room moi,
 	    ///		  luu thong tin phong vao db (roomId, cusomerSocketId, driverSocketId)
 	    /// 	+ thong bao cho cac driver khac la da ket noi giua 2 nguoi: driver da nhan broadcast cho cac driver con lai 
