@@ -1,4 +1,3 @@
-'use strict';
 
 function ajaxGet(method, url, callback) {
       var xmlhttp = new XMLHttpRequest();
