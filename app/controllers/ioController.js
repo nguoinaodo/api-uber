@@ -136,7 +136,7 @@ function ioController(io) {
 	    // socket client disconnect
 	    socket.on('disconnect', function() {
 	    	console.log('socket id ' + socket.id + ' disconnected');
-	    	
+	    	console.log('hi');
 	    });
 	    
 	    // chat giua 2 client
